@@ -40,7 +40,7 @@ Trinity allows you to do the following:
 
     ![Hello world message](../images/trinity-hello-world.png)
 
-9.  Make sure that the AMOUNT field is 0 and click **Send**
+9. Make sure that the AMOUNT field is 0 and click **Send**
 
 Your transaction will appear in your transaction history. Click the transaction to display its details.
 

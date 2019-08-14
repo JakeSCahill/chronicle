@@ -31,7 +31,7 @@
 {
     "cat": "cryptography",
     "terms": {
-        "checksum": "Hashed data that allows you to detect errors and verify that you entered the correct data.  For example, in Trinity, a 9-tryte checksum is appended to the 81-tryte address so users can easily differentiate between their seed (81 trytes) and their address (90 trytes).", 
+        "checksum": "Hashed data that allows you to detect errors and verify that you entered the correct data. For example, in Trinity, a 9-tryte checksum is appended to the 81-tryte address so users can easily differentiate between their seed (81 trytes) and their address (90 trytes).", 
         "Curl": "Main hash function that's used in IOTA. Curl is based on a sponge construction, which was invented by the Keccak creators (SHA-3). Curl is designed for the Internet of things (IoT).",
         "Kerl": "Keccek-384 hash function that includes the additional conversion of its input and output from/to 243 trits to 48 bytes, using two's complement.",
         "Winternitz one-time signature": "Post-quantum signature scheme that's used to sign transactions that withdraw IOTA tokens."

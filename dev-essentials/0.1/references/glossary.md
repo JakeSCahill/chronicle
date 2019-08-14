@@ -24,7 +24,7 @@ Terms are listed in alphabetical order by category.
 
 ### Cryptography
 
-<dl><dt>checksum</dt><dd>Hashed data that allows you to detect errors and verify that you entered the correct data.  For example, in Trinity, a 9-character checksum is appended to the 81-tryte address so users can easily differentiate between their seed (81-trytes) and their address (90-characters) </dd></dl>
+<dl><dt>checksum</dt><dd>Hashed data that allows you to detect errors and verify that you entered the correct data. For example, in Trinity, a 9-character checksum is appended to the 81-tryte address so users can easily differentiate between their seed (81-trytes) and their address (90-characters) </dd></dl>
 
 <dl><dt>Curl</dt><dd>Main hash function that's used in IOTA. Curl is based on a sponge construction, which was invented by the [Keccak creators](https://en.wikipedia.org/wiki/SHA-3) (SHA-3). Curl is designed for the Internet of things (IoT).
 </dd></dl>
@@ -67,7 +67,7 @@ Terms are listed in alphabetical order by category.
 
 <a name="branch"></a><dl><dt>branch transaction</dt><dd>Transaction that is referenced by another transaction.</dd></dl>
 
-<dl><dt>bundle</dt><dd>Group of transactions that are sent together to an IRI node.  Bundles are atomic. Either all transactions inside the bundle are accepted or none of them are.</dd></dl>
+<dl><dt>bundle</dt><dd>Group of transactions that are sent together to an IRI node. Bundles are atomic. Either all transactions inside the bundle are accepted or none of them are.</dd></dl>
 
 <dl><dt>confirmed</dt><dd>State of a transaction when it's been approved by a milestone</dd></dl>
 

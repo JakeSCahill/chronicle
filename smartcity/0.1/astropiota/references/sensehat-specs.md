@@ -4,11 +4,11 @@
 
 ## I²C Sensors
 
-Inertial measurement sensor: ST LSM9DS1 [data sheet](http://www.st.com/web/en/resource/technical/document/datasheet/DM00103319.pdf).  This is a 3D accelerometer, 3D gyroscope and 3D magnetometer combined in one chip.   It provides the pitch, roll and yaw orientation of Sense HAT.
+Inertial measurement sensor: ST LSM9DS1 [data sheet](http://www.st.com/web/en/resource/technical/document/datasheet/DM00103319.pdf). This is a 3D accelerometer, 3D gyroscope and 3D magnetometer combined in one chip.   It provides the pitch, roll and yaw orientation of Sense HAT.
   
-Barometric pressure and temperature sensor: ST LPS25H [data sheet](http://www.st.com/web/en/resource/technical/document/datasheet/DM00066332.pdf).  This provides a measurement of air pressure in Pascals or Millibars, plus, temperature in centigrade.
+Barometric pressure and temperature sensor: ST LPS25H [data sheet](http://www.st.com/web/en/resource/technical/document/datasheet/DM00066332.pdf). This provides a measurement of air pressure in Pascals or Millibars, plus, temperature in centigrade.
 
-Relative humidity and temperature sensor: ST HTS221 [data sheet](http://www.farnell.com/datasheets/1836732.pdf).  This provides the percentage of relative humidity, as well as, the temperature in centigrade. 
+Relative humidity and temperature sensor: ST HTS221 [data sheet](http://www.farnell.com/datasheets/1836732.pdf). This provides the percentage of relative humidity, as well as, the temperature in centigrade. 
 
 ## Outputs
 

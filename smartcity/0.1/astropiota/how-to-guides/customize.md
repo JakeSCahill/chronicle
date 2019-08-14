@@ -6,7 +6,7 @@ This sample code was inspired by [Dave de Fijter's High Mobility MAM example](ht
 
 ## AstroPiOTA sender
 
-First, the sender.js file imports the MAM client and the IOTA trytes converter.  Next, it imports the sense-hat-led package to enable the scrolling marquee.  Finally, it imports the IMU package used to sense IMU data.
+First, the sender.js file imports the MAM client and the IOTA trytes converter. Next, it imports the sense-hat-led package to enable the scrolling marquee. Finally, it imports the IMU package used to sense IMU data.
 
 ```javascript
 const Mam = require('../external/mam.client.js');
@@ -16,13 +16,13 @@ const imu = require("node-sense-hat").Imu;
 const IMU = new imu.IMU();
 ```
 
-Sender.js initializes the MAM message stream.  During initialization, seeds and addresses are generated to be used for securely posting messages.  In this example, messages are stored on the Devnet network rather than the Mainnet network.  
+Sender.js initializes the MAM message stream. During initialization, seeds and addresses are generated to be used for securely posting messages. In this example, messages are stored on the Devnet network rather than the Mainnet network.  
 
 ```javascript
 let mamState = Mam.init('https://nodes.devnet.iota.org:443');
 ```
 
-Mode is set to "public".  Public mode allows anyone to view environment data published by AstroPiOTA.   A placeholder, mamSecret, is available for use with a "private" or "restricted" message type.
+Mode is set to "public". Public mode allows anyone to view environment data published by AstroPiOTA.   A placeholder, mamSecret, is available for use with a "private" or "restricted" message type.
 
 ```javascript
 const mamType = 'public';
@@ -30,11 +30,11 @@ const mamSecret = 'DONTSHARETHIS';
 mamState = Mam.changeMode(mamState, mamType, mamSecret);
 ```
 
-Sender.js configures the Sense Hat scrolling marquee to post humidity and temperature data in centigrade or Celsius and Fahrenheit.  To speed up the marquee, this data was rounded.  
+Sender.js configures the Sense Hat scrolling marquee to post humidity and temperature data in centigrade or Celsius and Fahrenheit. To speed up the marquee, this data was rounded.  
 
-> Raw temperature data is shown.  However, the Sense Hat temperature sensor is near Raspberry Pi which heats up during use.  Calibration tests indicate that the Sense Hat temperature is about 13 degrees above local temperature.  You can calibrate to your location by comparing Sense Hat temperature to local temperature.  You may want to change the data being reported in your MAM message. 
+> Raw temperature data is shown. However, the Sense Hat temperature sensor is near Raspberry Pi which heats up during use. Calibration tests indicate that the Sense Hat temperature is about 13 degrees above local temperature. You can calibrate to your location by comparing Sense Hat temperature to local temperature. You may want to change the data being reported in your MAM message. 
 
-Scroll speed is 0.2, making the scrolling text slow enough to read, but not too slow.  The `backColour` and `textColour` are set using RGB values between 0 and 255.  In this example, the background color is orange and the text is blue.
+Scroll speed is 0.2, making the scrolling text slow enough to read, but not too slow. The `backColour` and `textColour` are set using RGB values between 0 and 255. In this example, the background color is orange and the text is blue.
 
 ```javascript
 async function publish (data) {
@@ -45,7 +45,7 @@ async function publish (data) {
         scrollSpeed=0.2, backColour=[100,100,0], textColour=[0,0,100]);
 ```
 
-The MAM message is formatted into json.  Location is hard-coded.
+The MAM message is formatted into json. Location is hard-coded.
 
 ```javascript
   let toSend = JSON.stringify({ 'AstroPiData': data, 'location': 'Los Angeles,CA                                                                                        ,USA' });
@@ -71,7 +71,7 @@ Sensor data is sent to the MAM message address created during initialization of 
     console.log(e);
   }
 ```
-In order for Receiver.js to find AstroPiOTA's current MAM channel, it must have the message root.  Thus, sender.js prints instructions on the console in this format:  
+In order for Receiver.js to find AstroPiOTA's current MAM channel, it must have the message root. Thus, sender.js prints instructions on the console in this format:  
 
 ```
 ADDRESSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -88,7 +88,7 @@ Copy the command from your console and paste it into another terminal window to 
 }
 ```
 
-Any errors from Sense Hat IMU are reported.  Sensor data is published.
+Any errors from Sense Hat IMU are reported. Sensor data is published.
 
 ```javascript
 async function updateLocation () {
@@ -125,7 +125,7 @@ sense.clear(0,100,0)
 
 ## AstroPiOTA receiver
 
-Like the sender, receiver.js imports the MAM client and the trytes convertor.  Mode is set to "public".  A placeholder, mamSecret, is available for use with a "private" or "restricted" message type.
+Like the sender, receiver.js imports the MAM client and the trytes convertor. Mode is set to "public". A placeholder, mamSecret, is available for use with a "private" or "restricted" message type.
 
 ```javascript
 const Mam = require('../external/mam.client.js');
@@ -134,7 +134,7 @@ const mamType = 'public';
 const mamSecret = 'DONTSHARETHIS';
 ```
 
-Receiver.js keeps track of the current and next root so it knows what to listen to and when to output data to the screen.  Receiver.js never publishes data on the Sense Hat scrolling marquee.
+Receiver.js keeps track of the current and next root so it knows what to listen to and when to output data to the screen. Receiver.js never publishes data on the Sense Hat scrolling marquee.
 
 ```javascript
 let root = null;
@@ -158,7 +158,7 @@ async function initMam () {
 }
 ```
 
-Receiver.js checks the MAM stream every 5 seconds for new data on the current root.  If a new root is found, then it monitors the new root.
+Receiver.js checks the MAM stream every 5 seconds for new data on the current root. If a new root is found, then it monitors the new root.
 
 ```javascript
 async function checkMam () {
@@ -167,7 +167,7 @@ async function checkMam () {
   }
 ```
 
-The showData callback will be called, in order, for each message found.  Thus, the messages are shown in chronological order based on the date and time posted to the Tangle.
+The showData callback will be called, in order, for each message found. Thus, the messages are shown in chronological order based on the date and time posted to the Tangle.
 
 ```javascript
   const data = await Mam.fetch(root, mamType, mamSecret, showData)

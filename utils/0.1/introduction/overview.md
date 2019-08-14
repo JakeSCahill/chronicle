@@ -4,7 +4,7 @@
 
 ### **Official support** ###
 
-The following utilities are maintained by us at the IOTA Foundation.  Use these links to find instructions for using the utilities and information about how they work.
+The following utilities are maintained by us at the IOTA Foundation. Use these links to find instructions for using the utilities and information about how they work.
 
 ---------------
 #### **Area code finder** ####

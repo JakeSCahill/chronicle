@@ -73,7 +73,7 @@ Raspbian Jessie comes with NodeRed, which must be removed.
     sudo npm install iota.lib.js
     ```
 
-2. Check your installation by retrieving Node information from the IOTA Developer's Tangle.  Open a text file and copy this script:
+2. Check your installation by retrieving Node information from the IOTA Developer's Tangle. Open a text file and copy this script:
 
   ```javascript
   var request = require('request');

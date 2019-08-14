@@ -44,7 +44,7 @@ To verify the authenticity of Trinity Desktop, you can use the SHA256 hash and c
 
 1. Open Terminal (in `/Applications/Utilities/Terminal`)
 
-2.  Create a SHA256 hash of the Trinity Desktop `.dmg` file. Replace the path with the path to your Trinity `.dmg` file.
+2. Create a SHA256 hash of the Trinity Desktop `.dmg` file. Replace the path with the path to your Trinity `.dmg` file.
 
   ```bash
   shasum -a 256 /path/to/trinity-desktop-version.dmg
