@@ -1,61 +1,60 @@
-# SCYLLA data model
+# Data in the database
 
-**This section describes the data model.**  The data model has 4 tables:  
+**Chronicle saves data from the Tangle in a Scylla database. This article describes the data in that database.**
 
-- Bundle table - stores transaction bundles
+The Scylla database includes the following database tables:
 
-- Edge table - 
+- **Bundle table:** Contains transaction bundles
+
+- **Edge table:**
 
 - Tag table - limits the amount of time you can search by tag
 
-- Zero-value table - stores spam and data transactions by month
-
-
+- **Zero-value table:** - Contains spam and data transactions, which are ordered by month
 
 ## Bundle table
 
-Stores transaction bundles
+This table stores data about transaction bundles.
 
-![bundle table sample](images/bundleTable.png)
+![Bundle table example](../images/bundleTable.png)
 
-***Fields***
+**Fields**
 
-```bundle_hash``` is the main partition key. This means all bundles with same bundle_hash are stored in the same partition and replicated to the same replicas.  
+`bundle_hash` is the main partition key. This means all bundles with same bundle_hash are stored in the same partition and replicated to the same replicas.  
 
-```outputs```
+`outputs`
 
-```inputs```
+`inputs`
 
-```transactions_hashes```
+`transactions_hashes`
 
-```head_hashes```
+`head_hashes`
 
 ***How to lookup rows***
 
-Rows are ordered by current_index(index) in ASC (ascending) order. Lookup by finding outputs. Use an output to locate inputs. Use an input to find the transactions_hashes. Then, use the head_hashes of a transactions_hash.
-
+Rows are ordered by current_index(index) in ascending order. Look up by finding outputs. Use an output to locate inputs. Use an input to find the transactions_hashes. Then, use the head_hashes of a transactions_hash.
 
 ## Edge table
 
 Provides secondary indexes
 
-![edge table sample](images/edgeTable.png)
+![edge table sample](../images/edgeTable.png)
 
-***Fields***
+**Fields**
 
-```address```
+`address`
 
-```transaction_hash```
+`transaction_hash`
 
-```tip```
+`tip`
 
-****How to look up rows***
+**How to look up rows**
 
 The partition key can be any field
 
 All the rows with the same partition key are stored in the same partition and replicated across the same replicas. This enables lookup by any partition key even within a time-range
 
-***Example***
+**Example**
 
 Select an address that has been used as an input or output within a time-range
 
@@ -73,6 +72,6 @@ There can be an unlimited number of transactions that use the same tag. This cou
 
  Stores transactions with zero-value by month  
 
- ***Fields***
+ **Fields**
  
  Same as the edge table, except that the partition key is a composite partition key composed of address, year, month. This means only the monthly activities for that address will exist in the same shard. 
