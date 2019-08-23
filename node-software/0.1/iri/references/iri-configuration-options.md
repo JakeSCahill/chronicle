@@ -57,6 +57,7 @@ Use these settings to customize how your node communicates with neighbors.
 |<a name="p-remove-request"></a>`--p-remove-request` |`P_REMOVE_REQUEST`|Set the probability of the IRI stopping to request a transaction |number between 0 and 1 |0.01 |This number should be close to 0 so that non-existing transaction hashes are eventually removed
 |<a name="queue-size"></a>`--queue-size `|`Q_SIZE_NODE`|Set the maximum size of the REPLY, BROADCAST, and RECEIVE network queues | number|1,000|
 |<a name="reconnect-attempt-interval-seconds"></a>`--reconnect-attempt-interval-seconds` |`RECONNECT_ATTEMPT_INTERVAL_SECONDS`|Set the number of seconds to wait before trying to reconnect to a disconnected neighbor |number |60|
+|<a name="testnet"></a>`--testnet` |`TESTNET`|Whether the node will run on a network other than the Mainnet |boolean |false|
 
 ## IXI
 
