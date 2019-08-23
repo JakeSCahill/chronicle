@@ -251,11 +251,6 @@ Before you can run the binary file, you need to configure it.
 	:tada: Hub is now running!
 	:::
 
-	:::danger:json.exception.parse_error.101
-	If you see the following error message, make sure that the node you're connected to uses the HTTP protocol instead of HTTPS. You can check the address of your node in the `apiAddress` field of the [command line flags](../references/command-line-flags.md).
-	E0328 10:57:54.417129 13906 beast.cc:65] [json.exception.parse_error.101] parse error at 1: syntax error - invalid literal; last read: '<'
-	:::
-
 	You're running Hub in your shell session. If you close this session, Hub will stop. Therefore, you might want to consider running Hub in a screen/tmux session, a system-wide service, or a supervised process.
 
 	For this tutorial, you'll use a supervisor process to make sure that Hub always runs and automatically restarts after a reboot or a crash. 

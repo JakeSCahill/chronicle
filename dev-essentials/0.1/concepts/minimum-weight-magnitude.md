@@ -10,15 +10,11 @@ PoW was introduced as a concept to reduce large amounts of email spam. This conc
 
 PoW is easy to calculate for one email, but costs a lot in time and computational power to calculate for mass spam emails.
 
-### Proof of work in IOTA
+## Proof of work in IOTA
 
 Similar to hashcash, each transaction must include a PoW before it can be validated. This PoW provides spam protection for an IOTA network by increasing the time and computational power it takes to create mass spam transactions.
 
-To calculate the PoW for a transaction, the following [contents of the transaction](root://dev-essentials/0.1/references/structure-of-a-transaction.md) are converted from trytes to trits, then those trits are hashed to result in a transaction hash:
-
-* **Bundle hash:** Hash that's calculated using the `address`, `obsoleteTag`, `timestamp`, `value`, `currentIndex`, and `lastindex` fields of all transactions in a bundle. These fields are called the **bundle essence**.
-* **Signature:** Signature of the transaction (if it withdraws IOTA tokens from an address)
-* **Trunk transaction and branch transaction:** Two transactions that the transaction references and approves
+To calculate the PoW for a transaction, [its contents](root://dev-essentials/0.1/references/structure-of-a-transaction.md) are converted from trytes to trits, then those trits are hashed to result in a transaction hash.
 
 ### Minimum weight magnitude
 
@@ -40,7 +36,7 @@ Every increment of the MWM triples the difficulty of the PoW.
 
 If the transaction hash ends in the correct number of 0 trits ([minimum weight magnitude](root://dev-essentials/0.1/concepts/minimum-weight-magnitude.md)), it's considered valid.
 
-### The `nonce` field
+### The nonce
 
 If the transaction hash doesn't end in the correct number of 0 trits, the value of the transaction's `nonce` field is incremented and the transaction hash is hashed again.
 

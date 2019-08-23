@@ -24,7 +24,7 @@ This table contains information about the Hub owner's addresses to which the tok
 | **Field**           | **Description**          |**Default**|
 |:---------------|:-----------------------|:-------------------|
 | `id`              | Unique ID of the Hub owner's addresses |NULL|
-| `address`         | 81-trye address (no checksum)|          NULL      |
+| `address`         | 81-tryte address (no checksum)|          NULL      |
 | `seed_uuid`       | Universally unique identifier. This string is used in the [Argon2](https://www.argon2.com/) hashing function to create the seed that derives the address. When Hub is started with a `salt` flag, the value of that flag is also used in the hashing function to create the seed. |        NULL        |
 | `is_cold_storage` | Disable sweeps for this address| 0|
 | `balance`         | Total amount of IOTA tokens in the address|    0            |
@@ -106,7 +106,7 @@ This table contains information about the users' deposit addresses.
 | **Field**       | **Description**          | **Default**|
 |:----------------|:--------------------------|:--------|
 | `id`         | Unique ID of the user's address. Each address is derived from a unique seed.   | NULL               |
-| `address`    | 81-trye address (no checksum)   | NULL                |
+| `address`    | 81-tryte address (no checksum)   | NULL                |
 | `user_id`    | ID of the user's account in the `user_account` table    | NULL |
 | `seed_uuid`  |  Universally unique identifier. This string is used in the [Argon2](https://www.argon2.com/) hashing function to create the seed that derives the address. When Hub is started with a `salt` flag, the value of that flag is also used in the hashing function to create the seed. | NULL                |
 | `created_at` | Date and time that the address was saved in the following format: `YYYY-MM-DD HH:MM:SS` | The current date and time |

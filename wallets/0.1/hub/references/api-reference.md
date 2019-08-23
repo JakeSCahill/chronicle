@@ -150,6 +150,14 @@ Currently not used.
 
 <a name="hub.rpc.ProcessTransferBatchReply"></a>
 
+### HubAddressBalanceReason
+
+|**Name**|        **Number**| **Description**                               |
+| ----------- | ------ | ----------------------------------------- |
+| HUB_UNKNOWN | 0      |                                           |
+| INBOUND     | 1      | Sweep inbound (used as remainder address) |
+| OUTBOUND    | 2      | Sweep outbound (used as input)            |
+
 ### ProcessTransferBatchReply
 
 <a name="hub.rpc.ProcessTransferBatchRequest"></a>
@@ -175,7 +183,7 @@ Currently not used.
 
 |**Field**|**Type**|**Rules**|**Description**|
 | ---------------- | ----------------- | ----- | ------------------------------------------------------------ |
-| address          | [string](#string) | singular      | The Hub owner's address (without checksum) |
+| address          | [string](#string) | singular      | The Hub user's address that you want to withdraw from (without checksum) |
 | bundleHash       | [string](#string) |  singular     | The bundle hash that needs signing                      |
 | authentication   | [string](#string) |  singular     | Authentication token (if used)                                       |
 | validateChecksum | [bool](#bool)     |   singular    | Whether to validate the address                            |
@@ -257,6 +265,19 @@ Currently not used.
 | amount          | [int64](#int64)                                         | singular    |   Amount that changed to the balance     |        
 | sweepBundleHash or withdrawalUUID  | [string](#string)                                            |      singular | Contains either a bundle hash for a `DEPOSIT` event or a withdrawal UUID for a `WITHDRAWAL` or `WITHDRAWAL_CANCELED` event|
 
+<a name="hub.rpc.UserAccountBalanceEventType"></a>
+
+### UserAccountBalanceEventType
+
+|**Name**|**Number**|**Description**  |
+| :------------------- | :------ | :------------------------------------------------------------ |
+| UAB_UNKNOWN         | 0      | Unused                                                       |
+| DEPOSIT             | 1      | Deposit into user account (positive amount)                  |
+| BUY                 | 2      | User received tokens as part of a transfer batch (positive amount) |
+| WITHDRAWAL          | 3      | User withdrawal request (negative amount)                    |
+| WITHDRAWAL_CANCELED | 4      | Canceled user withdrawal request (positive amount)          |
+| SELL                | 5      | User lost tokens as part of a transfer batch (negative amount) |
+
 <a name="hub.rpc.UserAddressBalanceEvent"></a>
 
 ### UserAddressBalanceEvent
@@ -269,6 +290,16 @@ Currently not used.
 | reason      | [UserAddressBalanceReason](#hub.rpc.UserAddressBalanceReason) |      singular |    The reason that the balance of the address changed                                                          |
 | tail transaction hash or bundle hash       | [string](#string)                                            |   singular    | Contains either a tail transaction hash for a `DEPOSIT` reason or a bundle hash for a `SWEEP` reason |
 | timestamp   | [uint64](#uint64)                                            |      singular |       Time since epoch in MS when the balance change occured                                                        |
+
+<a name="hub.rpc.UserAddressBalanceReason"></a>
+
+### UserAddressBalanceReason
+
+|**Name**|         **Number**| **Description**             |
+| ------------ | ------ | ------------------------ |
+| UADD_UNKNOWN | 0      |    Unknown                      |
+| UA_DEPOSIT   | 1      | New user deposit |
+| UA_SWEEP     | 2      | New sweep              |
 
 <a name="hub.rpc.UserWithdrawCancelRequest"></a>
 
@@ -324,6 +355,8 @@ Currently not used.
 
 <a name="hub.rpc.Error"></a>
 
+<a name="hub.rpc.HubAddressBalanceReason"></a>
+
 ### Error
 
 Errors are serialized and stored in the Status' detail field.
@@ -356,43 +389,10 @@ These are all the error codes that can be returned by the Hub.
 | GET_ADDRESS_FAILED              | 13     | Call to rpc signing_server failed (GetAddressForUUID)        |
 | GET_SECURITY_LEVEL_FAILED       | 14     | Call to rpc signing_server failed (GetSecurityLevel)         |
 
-<a name="hub.rpc.HubAddressBalanceReason"></a>
-
-### HubAddressBalanceReason
-
-|**Name**|        |**Number**| |**Description**|                               |
-| ----------- | ------ | ----------------------------------------- |
-| HUB_UNKNOWN | 0      |                                           |
-| INBOUND     | 1      | Sweep inbound (used as remainder address) |
-| OUTBOUND    | 2      | Sweep outbound (used as input)            |
-
-<a name="hub.rpc.UserAccountBalanceEventType"></a>
-
-### UserAccountBalanceEventType
-
-|**Name**|                |**Number**| |**Description**|       |
-| :------------------- | :------ | :------------------------------------------------------------ |
-| UAB_UNKNOWN         | 0      | Unused                                                       |
-| DEPOSIT             | 1      | Deposit into user account (positive amount)                  |
-| BUY                 | 2      | User received tokens as part of a transfer batch (positive amount) |
-| WITHDRAWAL          | 3      | User withdrawal request (negative amount)                    |
-| WITHDRAWAL_CANCELED | 4      | Canceled user withdrawal request (positive amount)          |
-| SELL                | 5      | User lost tokens as part of a transfer batch (negative amount) |
-
-<a name="hub.rpc.UserAddressBalanceReason"></a>
-
-### UserAddressBalanceReason
-
-|**Name**|         |**Number**| |**Description**|              |
-| ------------ | ------ | ------------------------ |
-| UADD_UNKNOWN | 0      |    Unknown                      |
-| UA_DEPOSIT   | 1      | New user deposit |
-| UA_SWEEP     | 2      | New sweep              |
-
 ## Scalar Value Types
 
-| .proto Type                    | Notes                                                        | C++ Type | Java Type  | Python Type |
-| ------------------------------ | ------------------------------------------------------------ | -------- | ---------- | ----------- |
+| **.proto type**                    | **Notes**                                                        | **C++ type** | **Java type**  | **Python type** |
+| :------------------------------ | :------------------------------------------------------------ | :-------- | :---------- | :----------- |
 | <a name="double" /> double     |                                                              | double   | double     | float       |
 | <a name="float" /> float       |                                                              | float    | float      | float       |
 | <a name="int32" /> int32       | Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead. | int32    | int        | int         |

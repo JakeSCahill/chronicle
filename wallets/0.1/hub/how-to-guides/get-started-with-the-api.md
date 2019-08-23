@@ -18,7 +18,7 @@ You must have [installed Hub](../how-to-guides/install-hub.md) and it must be ru
     sudo apt install -y npm
     ```
 
-2. Install the grpcc package
+2. Install the `grpcc` package
 
     ```bash
     sudo npm install -g grpcc
@@ -35,6 +35,10 @@ You must have [installed Hub](../how-to-guides/install-hub.md) and it must be ru
     ```bash
     grpcc -i -a localhost:50051 -p proto/hub.proto
     ```
+
+    :::info:
+    If you see an error message about a binary not being installed, try removing your `node_modules` directory, then reinstall the `grpcc` package with the following command: `sudo npm install -g --unsafe-perm grpcc`.
+    :::
     
     You should see something like the following:
 
@@ -77,7 +81,11 @@ You must have [installed Hub](../how-to-guides/install-hub.md) and it must be ru
     The `pr` argument is a pre-built callback function that prints the result to the console.
     :::
 
-    Now, you'll have a new user in the database. You can see this user in the database by [querying the `user_account` table](../how-to-guides/query-the-database.md).
+    Now, you'll have a new user in the database.
+
+    :::info:
+     You can see this user in the database by [querying the `user_account` table](../how-to-guides/query-the-database.md).
+     :::
 
 5. Create a new deposit address for the user
 
@@ -98,22 +106,21 @@ You must have [installed Hub](../how-to-guides/install-hub.md) and it must be ru
     :::info:
     In the database, addresses are always saved without the checksum.
 
-    All addresses are created from unique seeds. All seeds are created from a hash of the values of the `seeduuid` field and the [`salt`](../references/command-line-flags.md) parameter (if provided).
+    All addresses are created from unique seeds, and all seeds are created from a hash of the values of the `seeduuid` field and the [`salt`](../references/command-line-flags.md) parameter (if provided).
     :::
 
 7. Press **Ctrl**+**C** twice to stop the gRPC client
 
-:::success:Congratulations!
-:tada: You've successfully used two gRPC methods to create a new user with two different deposit addresses.
+:::success:Congratulations :tada:
+You've successfully used two gRPC methods to create a new user with two different deposit addresses.
 Each of these deposit addresses was derived from a unique seed.
 :::
 
 ## Next steps
 
-1. Send funds to one of the deposit addresses
-2. Use the [`sweepSubscription()`](../references/api-reference.md#hub.rpc.SweepSubscriptionRequest) method to subscribe to new sweep events. This way, Hub will let you know when a sweep takes place. 
-3. [Query the database to find out the seed UUID](../how-to-guides/query-the-database.md) that was used to create the seed for each deposit address.
-4. Use the [`userWithdraw()`](../references/api-reference.md#hub.rpc.UserWithdrawRequest) method to make a withdrawal request from the deposit address
+1. Deposit IOTA tokens into one of the user deposit addresses
+2. Use the [`sweepSubscription`](../references/api-reference.md#hub.rpc.SweepSubscriptionRequest) method to subscribe to new sweep events. This way, Hub will let you know when a sweep takes place. 
+3. Use the [`userWithdraw()`](../references/api-reference.md#hub.rpc.UserWithdrawRequest) method to make a withdrawal request from the deposit address
 
 
 

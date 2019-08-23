@@ -27,6 +27,7 @@
 [Hub/How-to Guides/Get started with the API](/hub/how-to-guides/get-started-with-the-api.md)
 [Hub/How-to Guides/Query the database](/hub/how-to-guides/query-the-database.md)
 [Hub/How-to Guides/Integrate Hub into an exchange](/hub/how-to-guides/integrate-hub.md)
+[Hub/How-to Guides/Rescue tokens from a swept address](/hub/how-to-guides/rescue-tokens.md)
 [Hub/References/API reference](/hub/references/api-reference.md)
 [Hub/References/Command line flags](/hub/references/command-line-flags.md)
 [Hub/References/Database tables](/hub/references/database-tables.md)

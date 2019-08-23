@@ -1,134 +1,119 @@
 # Integrate Hub into a cryptocurrency exchange
 
-**Hub can be integrated into an exchange in many ways, depending on how you want to manage your users' balances.**
+**You can integrate Hub into an exchange in many ways, depending on how you want to manage your users' balances.**
 
-In this guide, we discuss two possible scenarios:
+By default, Hub keeps a record of all user balances in a database, and allows users to trade with each other through their Hub accounts.
 
-- **Scenario A:** Multiple user accounts where IOTA tokens are manually transferred to an external online wallet (also known as a hot wallet).
-- **Scenario B:** Multiple user accounts with individual balances.
+In this guide, we discuss two integration options:
 
-## Scenario A
+- **Manage user balances in Hub (default):** Easiest way to manage trades and user balances
+- **Manage user balances outside of Hub:** Easiest way to store all users' IOTA tokens outside of Hub
 
-You may not want to rely on Hub's internal accounting setup. One such reason might simply be that forwarding netted trades is too cumbersome.
-Therefore, after a successful deposit, all tokens might be transferred to a central hot wallet. This will also allow you to deal with cold storage of tokens easily by withdrawing from this hot wallet to an offline wallet (also known as a cold wallet) address and depositing back into the account as necessary. User withdrawals are then also processed from this hot wallet.
+## Integration option 1. Manage user balances in Hub
 
-:::warning:Warning
-In this scenario, Hub doesn't keep track of users' balances in the database.
+Hub supports user accounts that each have a tracked balance. This way,users can trade and withdraw only as many tokens as they own.
+
+To action a trade, you can use the `ProcessTransfers` or the `UserWithdraw` endpoints.
+
+:::info:
+When you use the `ProcessTransfers` endpoint, no tokens are transferred on the Tangle. Instead, the users' balances are updated in the database, which affects how many tokens users can request to withdraw.
+
+When you use the `UserWithdraw` endpoint, the tokens are transferred on the Tangle and the users' balances are updated in the database.
 :::
 
-### Initial setup
+Because the `UserWithdraw` endpoint allows you to withdraw only from a user address and not the Hub owner's addresses, it's difficult to store tokens outside of Hub (in a cold wallet).
 
-Exchange creates a hot wallet
+|**User action**|**Exchange action**|**Hub endpoint**|
+|:----------|:--------------|:-----------|
+|Signs up for an IOTA account on the exchange|Creates a new user in Hub| `CreateUser`|
+|Requests a deposit address in which to deposit IOTA tokens|Creates a new deposit address for the user|`GetDepositAddress`|
+|Deposits IOTA tokens into the address|Notifies the user on the exchange frontend after the deposit has been swept to one of the Hub owner's new addresses| `BalanceSubscription`|
+|Requests a withdrawal to an address outside of Hub|Issues the withdrawal|`UserWithdraw`|
+|Buys tokens from another user|Actions the trade between the two users by updating their balances in the Hub database|`ProcessTransfers`|
 
-#### User signup
+### Store IOTA tokens outside of Hub
 
-Exchange creates a new Hub user, passing in a userid.
+To store IOTA tokens outside of Hub, you need to transfer them from one of the Hub owner's addresses to the new cold wallet address.
 
-### User deposit
+:::warning:Warning
+When you transfer tokens outside of Hub, you're at risk of not being able to process withdrawal requests.
+:::
 
-1. User requests deposit address (`GetDepositAddress`)
-2. User deposits tokens
-3. Exchange polls for new updates, using the `BalanceSubscription` endpoint
-4. Upon successful deposit (& sweep), exchange calls the `ProcessTransfers` endpoint, transferring all new user deposits to the hot wallet
+1. Stop Hub
 
-### User withdrawal
+2. Set the [`is_cold_storage`](../references/database-tables.md#hub_address) field to 1 for any Hub addresses in the `hub_address` table row that you want to use as cold storage.
 
-1. User requests withdrawal on the exchange's frontend
-2. Exchange issues withdrawal from hot to user address (`UserWithdraw`)
-3. Hub processes this withdrawal as part of a sweep
+3. Save the seed UUIDs of your chosen Hub addresses, then delete it from Hub
 
-### Cold wallet topup
+4. Use the seed UUID (and the salt if you set one) to recreate the seed for your chosen Hub addresses outside of Hub
 
-Exchange issues withdrawal from hot to cold wallet address that wasn't withdrawn from (`UserWithdraw`)
+5. Use the seed to transfer the IOTA tokens from the Hub addresses to the new address outside of Hub
+
+6. Restart Hub
+
+:::info:
+If enough interest exists for storing tokens outside of Hub, we can create a specialized endpoint that makes this task easier. Please reach out to us on [Discord](https://discord.iota.org).
+:::
+
+### Send IOTA tokens back to Hub
+
+To process withdrawal requests, you may need to transfer IOTA tokens back into Hub so that it can use them in a sweep.
+
+1. Stop Hub
+
+2. Set the `is_cold_storage` field to 0 for any Hub addresses in the `hub_address` table row that you want to send tokens to
+
+3. Restore the seed UUID for the addresses in the Hub database
+
+4. Restart Hub
+
+## Integration option 2. Manage user balances outside of Hub
+
+By managing user balances outside of Hub, it's easier to store tokens outside of Hub. But, you need to keep track of users' balances in your own system.
+
+### Prerequisites
+
+1. Create a cold wallet, using a new seed
+2. Create a new Hub user to use as a hot wallet
+
+---
+
+|**User action**|**Exchange action**|**Hub endpoint**|
+|:----------|:--------------|:-----------|
+|Signs up for an IOTA account on the exchange|Creates a new user in Hub| `CreateUser`|
+|Requests a deposit address in which to deposit IOTA tokens|Creates a new deposit address for the user|`GetDepositAddress`|
+|Deposits IOTA tokens into the address|Notifies the user on the exchange frontend after the deposit has been swept to one of the Hub owner's new addresses. Then, updates the Hub database so that the hot wallet owns all the IOTA tokens| `BalanceSubscription` and `ProcessTransfers`|
+|Requests a withdrawal to an address outside of Hub|Actions the withdrawal from the hot wallet to the user's chosen address|`UserWithdraw`|
+|Buys tokens from another user|When users buy and sell cryptocurrencies on the exchange, nothing is recorded in Hub because as far as Hub is aware, the hot wallet owns all the tokens. As a result, the exchange must handle all the accounting outside of Hub.|None|
+
+### Store IOTA tokens outside of Hub
+
+To store IOTA tokens outside of Hub, you need to transfer them from the hot wallet addresses to a cold wallet address.
+
+:::warning:Warning
+When you transfer tokens outside of Hub addresses, you're at risk of not being able to process withdrawal requests.
+:::
+
+1. Action a withdrawal from the hot wallet to a new address, using the `UserWithdraw` endpoint
 
   :::warning:Warning
-  In this scenario, Hub doesn't check whether an address was already withdrawn from.
+  In this scenario, Hub cannot check whether the new address was already withdrawn from.
   :::
 
-### Hot wallet topup
+### Send IOTA tokens back to Hub
 
-1. Exchange requests deposit address for hot user (`GetDepositAddress`)
+To process withdrawal requests, you may need to transfer IOTA tokens back into Hub so that it can use them in a sweep.
+
+1. Create a new deposit address for the hot wallet, using the `GetDepositAddress` endpoint
 
    :::warning:Warning
    Addresses must never be withdrawn from more than once.
    :::
 
-2. Exchange sends tokens from cold wallet to this deposit address
-3. Hub receives deposit and moves to internal address as part of a sweep
+2. Send tokens from the external address to this deposit address
 
-### User B buys IOTA tokens from user A on the exchange
+Hub receives the deposit and transfers them to a Hub owner's address as part of a sweep. The tokens in the Hub owner's addresses can be used to fulfil withdrawal requests if the total balance of deposits is not enough.
 
-No action happens on Hub, all accounting is done internally on the exchange side.
-
-### Discussion of the pros and cons
-
-- (+) Easy management of cold / hot tokens
-- (+) Likely to be easier to integrate on exchange side.
-- (-) Reduced security guarantees because balances are not tracked on a per-user level inside Hub.
-- (-) Exchange needs to keep track of total amount of IOTA tokens independently of Hub.
-
-## Scenario B
-
-As Hub supports independent user accounts with individual balances, it arguably makes sense to rely on this as an added security measure. Balances are tracked per user, and therefore a user can only use as many tokens as the user is tracking for them. However, this approach currently complicates the cold/hot wallet flow. 
-
-### Cold/hot wallets
-
-As opposed to Scenario A, it is not so easy to move tokens from multiple users to a cold wallet. However, it is possible to have Hub ignore some of the Hub owner's addresses. For this, the [`is_cold_storage`](../references/database-tables.md#hub_address) field in the `hub_address` table row needs to be set to 1. This will cause the `SweepService` to ignore this address for any sweeps.
-
-For increased security, the `seed_uuid` of this hub address should also be deleted from the database and stored externally.
-
-At the moment, the only way that this can be achieved is through manual database updates. It is recommended to stop Hub while marking such hub addresses as cold storage. There is no negative effect on operations if Hub is stopped.
-
-Using the `salt` that's passed at startup and the `seed_uuid` it is always possible to recompute Hub address's seed outside of Hub.
-
-Should sufficient interest exist for this integration scenario, it is possible to provide specialized endpoints for this.
-
-### Initial setup
-
-None. Start Hub.
-
-### User sign up
-
-Exchange creates new Hub user, passing in a per-user userid.
-
-### User deposit
-
-1. User requests deposit address (`GetDepositAddress`)
-2. User deposits tokens
-3. Hub moves the new deposit to an internal address
-3. Exchange polls for new updates via `BalanceSubscription` and notifies user on their frontend once the deposit has been registered or once it has been swept successfully
-
-### User withdrawal
-
-1. User requests withdrawal on exchange frontend.
-2. Exchange issues withdrawal from user's Hub account to payout address (`UserWithdraw`)
-3. Hub processes this withdrawal as part of a sweep.
-
-### Cold wallet topup
-
-1. Exchange stops Hub
-2. Exchange decides which Hub addresses it wants to mark as cold storage
-3. Exchange sets [`is_cold_storage`](../references/database-tables.md#hub_address) to `1` on these `hub_address` rows and stores the `seed_uuid` externally.
-   There are multiple scenarios for achieving this:
-   - Use a vault service
-   - Use paper backups
-   - Some RDBMS support partitioning the table into multiple storage locations.
-4. Exchange restarts Hub
-   
-### Hot wallet topup
-
-1. Exchange decides which cold storage addresses it wants to reactivate
-2. Exchange stops Hub
-3. Exchange sets [`is_cold_storage`](../references/database-tables.md#hub_address) to `0` on these `hub_address` rows and restores the `seed_uuid` values
-4. Exchange restarts hub
-
-### User B buys tokens from user A on the exchange
-
-1. If user B doesn't already exist, User B is created on Hub (`CreateUser`)
-2. As part of next batch, exchange issues a transfer between the two users (`ProcessTransfers`)
-
-### Discussion of the pros and cons
-
-- (+) Balances are tracked on a per-user level and thus Hub can do a sanity check on the requests the exchange sends.
-- (+) Exchange can easily do a sanity check that its backend is tracking the same `(user, balance)` values as Hub.
-- (-) More complicated cold wallet setup
+:::info:
+Find out more about [how sweeps work](../concepts/sweeps.md).
+:::

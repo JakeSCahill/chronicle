@@ -13,3 +13,5 @@
 [Official support/IOTA area codes/Get started](/official/iota-area-codes/get-started.md)
 
 [Official support/Trytes compressor/Get started](/official/tryte-compress/overview.md)
+
+[Official support/Proof of existance/Get started](/official/proof-of-existance/overview.md)
