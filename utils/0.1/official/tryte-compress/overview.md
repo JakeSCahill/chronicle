@@ -1,4 +1,4 @@
-# Trytes compressor
+# Trytes compressor overview
 
 **When you send a bundle of transactions to a node, sometimes those transactions don't reach the rest of the network, so they will never be confirmed. For example, a node may go offline before it can forward your transactions to its neighbors. As a result, we recommend that you store the transaction trytes so that you can later rebroadcast or reattach them. To store transaction trytes in a smaller memory space, use the trytes compressor tool to compress the trytes into bytes.**
 
@@ -26,9 +26,9 @@ To complete this tutorial, you need the following:
 If you've never used the IOTA client libraries before, we recommend completing [the getting started tutorial](root://getting-started/0.1/tutorials/send-a-zero-value-transaction-with-nodejs.md)
 :::
 
----
+### Step 1. Set up the sample
 
-1. Require the libraries
+1. Create a new file called `index.js` in your working directory, then require the libraries
 
     ```js
     const Iota = require('@iota/core');
@@ -124,6 +124,20 @@ If you've never used the IOTA client libraries before, we recommend completing [
 Whenever you send a transaction, you are now compressing the transaction trytes and storing them on your local device.
 :::
 
+### Step 2. Run the code
+
+You can run the sample code by using the following command
+
+```bash
+node index.js
+```
+
+You should see something like the following:
+
+```
+Compressed tail transaction trytes were saved to: MZGKBEXTDCVNBRZYFLFPWWQKWT9OB9ULHKQDHTCMQGITEIXKUDJJU9KVOW9UEIKJAMQAOJU9OITXEV999
+```
+
 ## Sample code
 
 ```js
@@ -191,11 +205,11 @@ function storeTailTransaction (transactionHash, bundleTrytes) {
 
 ## Next steps
 
-* Use the [trytes compressor utility](https://utils.iota.org/compress) to compress trytes in a user interface and see what memory savings you make.
+Use the [trytes compressor utility](https://utils.iota.org/compress) to compress trytes in a user interface and see what memory savings you make.
 
     ![Compressor](../images/compress.png)
 
-* Use the trytes compressor API to decompress the trytes before resending them to a node. For example, you could do the following:
+Use the trytes compressor API to decompress the trytes before resending them to a node. For example, you could do the following:
 
     ```js
     function readCompressedTailTransaction (file){

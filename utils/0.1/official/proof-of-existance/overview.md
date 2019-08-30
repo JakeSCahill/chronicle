@@ -22,30 +22,26 @@ To complete this tutorial, you need the following:
 * A code editor such as [Visual Studio Code](https://code.visualstudio.com/Download)
 * Access to a command prompt
 * An Internet connection
-* The [`@iota/poex-tool`](root://getting-started/0.1/tutorials/get-started.md) and the [`regenerator-runtime`](https://www.npmjs.com/package/regenerator-runtime) packages
+* The [`@iota/poex-tool`](https://www.npmjs.com/package/iota-poex-tool) and the [`regenerator-runtime`](https://www.npmjs.com/package/regenerator-runtime) packages
 
-:::info:
-If you've never used the IOTA client libraries before, we recommend completing [the getting started tutorial](root://getting-started/0.1/tutorials/send-a-zero-value-transaction-with-nodejs.md)
-:::
+### Step 1. Create an example contract
 
----
-
-1. Create a new file called `contract.txt`
-
-2. Add some text to the `contract.txt` file, for example, we use the following:
+Create a new file called `contract.txt` in your working directory, then copy in the following text
 
     ```
     My super secret contract.
     ```
 
-3. Create an `index.js` file in the same directory as the `contract.txt` file, and start by requiring the libraries
+### Step 2. Set up the sample
+
+1. Create a new file called `index.js` in the same directory as the `contract.txt` file, then require the libraries
 
     ```js
     require('regenerator-runtime');
     const PoEx = require ('@iota/poex-tool');
     ```
 
-4. Create an asynchronous function that takes a path to a file whose hash you want to attach to the Tangle
+2. Create an asynchronous function that takes a path to a file whose hash you want to attach to the Tangle
 
     ```js
     async function publish (file) {
@@ -56,7 +52,7 @@ If you've never used the IOTA client libraries before, we recommend completing [
     You can also pass this function binary data.
     :::
 
-5. In the `publish` function, hash the file, then send it in a transaction to a Devnet node
+3. In the `publish` function, hash the file, then send it in a transaction to a Devnet node
 
     ```js
     async function publish (file) {
@@ -83,7 +79,7 @@ If you've never used the IOTA client libraries before, we recommend completing [
     }
     ```
 
-6. Run the `publish` function, and pass it the path to the `contract.txt` file
+4. Run the `publish` function, and pass it the path to the `contract.txt` file
 
     ```js
     publish('contract.txt');
@@ -91,7 +87,7 @@ If you've never used the IOTA client libraries before, we recommend completing [
 
     When you execute the file, you should see that the transaction was attached to the Tangle. Now, you can use the bundle hash to verify that the file is unchanged.
 
-7. At the end of the `publish` function, verify that the hash of the file still matches the one that was attached to the Tangle
+5. At the end of the `publish` function, verify that the hash of the file still matches the one that was attached to the Tangle
 
     ```js
     // Set the node to check for the transaction
@@ -111,11 +107,6 @@ If you've never used the IOTA client libraries before, we recommend completing [
     [Find out more about IOTA networks](root://getting-started/0.1/references/iota-networks.md).
     :::
 
-    If the file is a match, you should see the following output:
-
-    ```
-    File verified: The file matches the hash on the Tangle
-    ```
 
 :::success:Congratulations :tada:
 You can now use the Tangle as a single source of truth to verify that a file is still unchanged.
@@ -130,6 +121,18 @@ In this example, we don't use a file. Instead, we pass a string to the `publish`
 :::
 
 <iframe height="600px" width="100%" src="https://repl.it/@jake91/proof-of-existance-utility?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+
+You can also run the sample code on your own device by using the following command
+
+```bash
+node index.js
+```
+
+If the file is a match, you should see the following output:
+
+```
+File verified: The file matches the hash on the Tangle
+```
 
 ## Next steps
 

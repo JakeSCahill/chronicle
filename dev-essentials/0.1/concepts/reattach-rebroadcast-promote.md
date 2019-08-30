@@ -1,10 +1,14 @@
 # Reattach, rebroadcast, and promote
 
-**A bundle may be pending for many reasons such as an increased load on the network. To increase the chances of a bundle being confirmed, you can reattach, rebroadcast, or promote a bundle**
+**A bundle may be pending for many reasons such as an increased load on the network. To increase the chances of a bundle becoming confirmed, you can reattach, rebroadcast, or promote it**
 
 ## Reattach
 
-To reattach a bundle means to create a new one and attach it to a different part of the Tangle. When you reattach a bundle, you keep most of the original bundle's fields the same, but you request new tip transactions, and do the proof of work again. As a result, the only fields that change are the following:
+Your transaction may have been attached to a part of the Tangle that is no longer considered valid. As a result, that transaction will never be included in the consensus.
+
+To reattach a bundle means to create a new one and attach it to a different part of the Tangle. This way, you give your transaction another chance at being included in the consensus.
+
+When you reattach a bundle, you keep most of the original bundle's fields the same, but you request new tip transactions (the new part of the Tangle), and do the proof of work again. As a result, the only fields that change are the following:
 
 * [`hash`](../references/structure-of-a-transaction.md)
 * [`trunkTransaction`](../references/structure-of-a-transaction.md)
@@ -12,15 +16,15 @@ To reattach a bundle means to create a new one and attach it to a different part
 * [`attachmentTimestamp`](../references/structure-of-a-transaction.md)
 * [`nonce`](../references/structure-of-a-transaction.md)
 
-You may want to reattach a bundle if its transactions have been pending for more than ten minutes. After this time, the tail transaction in the pending bundle is unlikely to be selected during tip selection, which makes it unlikely to be confirmed.
+You may want to reattach a bundle if its transactions have been pending for more than ten minutes. After this time, the tail transaction in the pending bundle is unlikely to be selected during tip selection, which makes it unlikely to be included in the consensus.
 
-When you reattach a bundle that transfers IOTA tokens, only one will ever be confirmed. The others will remain pending because they will lead to double-spends.
+When you reattach a bundle that transfers IOTA tokens, only one will ever be confirmed. The others will remain pending because they will lead to double-spends (spending the same IOTA tokens twice).
 
 ## Rebroadcast
 
-To rebroadcast a bundle means to send the same bundle to a node again.
+While your transactions are being sent to a node, it may go offline. In this case, the node may not forward your transactions to its neighbors. As a result, the rest of the network won't ever see your transactions, and they won't be included in the consensus.
 
-You may want to rebroadcast a bundle if you think that the node you sent it to didn't forward the transactions to its neighbors. Nodes might not forward transactions to neighbors if they either go offline or are under heavy load after receiving a bundle.
+To rebroadcast a bundle means to send the same bundle to a node again. This way, you give your transactions another chance at being forwarded to the rest of the network.
 
 ## Promote
 

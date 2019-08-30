@@ -4,7 +4,7 @@
 
 ## About proof of work
 
-A proof of work (PoW) is a piece of data that is calculated using trial and error to meet certain requirements. The key to PoW is that it's difficult to produce, but easy to verify.
+A proof of work (PoW) is a piece of data that is calculated using trial and error to meet certain requirements. The key to PoW is that it's difficult to do, but easy to check.
 
 PoW was introduced as a concept to reduce large amounts of email spam. This concept is known as [hashcash](https://en.wikipedia.org/wiki/Hashcash), and is a method of preventing email spam by requiring a proof of work for the contents of every email.
 
@@ -68,4 +68,4 @@ Clients have the following options for doing PoW:
 |Choose remote PoW on a node|Remote PoW is when clients asks a node to do PoW for a transaction. Clients do this by calling the [`attachToTangle` endpoint](root://node-software/0.1/iri/references/api-reference.md#attachToTangle). This way, clients can avoid using the computational power needed to do PoW.|Depending on how powerful the node is and how many requests it receives, it may time out and not complete the PoW |
 |Do local PoW|Local PoW is when clients do PoW for each transaction that they want to attach to the Tangle. This way, clients aren't reliant on unreliable nodes to do PoW.|The client device may not be powerful enough to complete PoW in a satisfactory amount of time|
 |Outsource PoW to a paid service|A paid PoW service is a third-party server that accepts IOTA transactions, completes PoW and returns it to the client. PoW is done faster more more reliably by a dedicated third-party server. An example of such a service is [powsrv.io](https://powsrv.io/#quickstart)|It costs money to use the service and you don't have control over it|
-|[Install a PoW proxy server](root://node-software/0.1/iri/how-to-guides/install-a-pow-proxy.md)|PoW is done faster more more reliably by your own dedicated server|You need to maintain the PoW proxy server|
+|[Install a PoW proxy server](root://node-software/0.1/iri/how-to-guides/install-a-pow-proxy.md)|PoW is done faster and more reliably by your own dedicated server|You need to maintain the PoW proxy server|

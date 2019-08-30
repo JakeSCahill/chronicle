@@ -13,16 +13,22 @@ The following utilities are maintained by us at the IOTA Foundation. Use these l
 Tag an IOTA transaction with a geo-location, and find others with the same tag.
 ---
 
-#### **Trytes compressor** ####
-[Link](../official/tryte-compress/overview.md)
-
-Store transaction trytes in a smaller memory space so you can later rebroadcast or reattach them.
----
-
 #### **Proof-of-existance provider** ####
 [Link](../official/proof-of-existance/overview.md)
 
 Prove that a file is unchanged so that all parties that trust it.
+---
+
+#### **Tangle certificate creator** ####
+[Link](../official/tangle-certificate/overview.md)
+
+Create a custom immutable certificate and control who can issue it.
+---
+
+#### **Trytes compressor** ####
+[Link](../official/tryte-compress/overview.md)
+
+Store transaction trytes in a smaller memory space so you can later rebroadcast or reattach them.
 ---------------
 
 ### __Community support__ ###

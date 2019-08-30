@@ -25,9 +25,6 @@ This section explains how to use Trinity.
 - References 
   - [References/Troubleshooting](how-to-guides/troubleshooting.md)
 
-- How-to Participate 
-  - [Contribute](https://github.com/iotaledger/documentation/blob/master/CONTRIBUTING.md)
-
   
 # Hub
 

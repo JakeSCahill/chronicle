@@ -28,7 +28,7 @@ Because the `UserWithdraw` endpoint allows you to withdraw only from a user addr
 |Signs up for an IOTA account on the exchange|Creates a new user in Hub| `CreateUser`|
 |Requests a deposit address in which to deposit IOTA tokens|Creates a new deposit address for the user|`GetDepositAddress`|
 |Deposits IOTA tokens into the address|Notifies the user on the exchange frontend after the deposit has been swept to one of the Hub owner's new addresses| `BalanceSubscription`|
-|Requests a withdrawal to an address outside of Hub|Issues the withdrawal|`UserWithdraw`|
+|Requests a withdrawal to an address outside of Hub|Actions the withdrawal|`UserWithdraw`|
 |Buys tokens from another user|Actions the trade between the two users by updating their balances in the Hub database|`ProcessTransfers`|
 
 ### Store IOTA tokens outside of Hub
@@ -82,7 +82,8 @@ By managing user balances outside of Hub, it's easier to store tokens outside of
 |:----------|:--------------|:-----------|
 |Signs up for an IOTA account on the exchange|Creates a new user in Hub| `CreateUser`|
 |Requests a deposit address in which to deposit IOTA tokens|Creates a new deposit address for the user|`GetDepositAddress`|
-|Deposits IOTA tokens into the address|Notifies the user on the exchange frontend after the deposit has been swept to one of the Hub owner's new addresses. Then, updates the Hub database so that the hot wallet owns all the IOTA tokens| `BalanceSubscription` and `ProcessTransfers`|
+|Deposits IOTA tokens into the address|Notifies the user on the exchange frontend after the deposit has been swept to one of the Hub owner's new addresses. Then, updates the user's balance on the exchange backend.|`BalanceSubscription`|
+| |Updates the Hub database so that the hot wallet owns all the IOTA tokens|`ProcessTransfers`|
 |Requests a withdrawal to an address outside of Hub|Actions the withdrawal from the hot wallet to the user's chosen address|`UserWithdraw`|
 |Buys tokens from another user|When users buy and sell cryptocurrencies on the exchange, nothing is recorded in Hub because as far as Hub is aware, the hot wallet owns all the tokens. As a result, the exchange must handle all the accounting outside of Hub.|None|
 

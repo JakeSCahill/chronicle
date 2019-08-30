@@ -72,6 +72,14 @@ Signatures prove ownership of the private key that was used to create an address
 
 IOTA uses the Winternitz one-time signature scheme (W-OTS) to create signatures. This signature scheme is quantum resistant, meaning that signatures are resistant to attacks from [quantum computers](https://en.wikipedia.org/wiki/Quantum_computing). But, this signature scheme also reveals an unknown amount of the private key.
 
+To make sure that it's always safe to withdraw from an address once, first the bundle hash is normalized to make sure that only half of the private key is revealed in the signature.
+
+<a id="address-reuse"></a>
+
+:::danger:Spent addresses
+If an address is withdrawn from (spent) more than once, more of the private key is revealed, so an attacker could brute force its signature and steal the IOTA tokens.
+:::
+
 To create a signature, private keys are used to sign the bundle hash of any transaction that withdraws IOTA tokens from the address. Then, the resulting signature is added to the transaction's [`signatureMessageFragment` field](../references/structure-of-a-transaction.md).
 
 :::info:
@@ -85,14 +93,6 @@ The bundle hash is derived from a hash of the values of each transaction's `addr
 :::
 
 ### How private keys are used to create signatures
-
-To make sure that it's always safe to withdraw from an address once, first the bundle hash is normalized to make sure that only half of the private key is revealed in the signature.
-
-<a id="address-reuse"></a>
-
-:::danger:Spent addresses
-If an address is withdrawn from (spent) more than once, more of the private key is revealed, so an attacker could brute force its signature and steal the IOTA tokens.
-:::
 
 Depending on the number of key fragments that a private key has, 27, 54, or 81 trytes of the normalized bundle hash are selected. These trytes correspond to the number of segments in a key fragment.
 

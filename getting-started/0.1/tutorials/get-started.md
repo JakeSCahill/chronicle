@@ -8,7 +8,7 @@ To start integrating IOTA into your app or website you need complete these three
 
 2. [Install a client library](#step-2.-install-a-client-library) so that you can interact with an IOTA network through a node
 
-3. [Make a test API request](#step-2.-make-a-test-api-request) to confirm that you're connected to a node
+3. [Make a test API request](#step-2.-make-a-test-api-request) to confirm that you're connected to a synchronized node
 
 :::info:Not a developer?
 If you want to see how IOTA works without having to write code, you can [use Trinity to create a seed and send your first data transaction](../tutorials/send-a-zero-value-transaction-with-the-trinity-wallet.md).
@@ -142,11 +142,27 @@ This command downloads the latest version of the IOTA Go client library and writ
 
 ## Step 3. Make a test API request
 
-To test the libraries, you can connect to a node and request information about the Tangle from it by calling the `getNodeInfo()` method.
+Before you use a node, you should make sure that it's synchronized with the rest of the network. This way, you know that it has an up-to-date [view of the Tangle](root://dev-essentials/0.1/concepts/the-tangle.md).
+
+A node is considered synchronized when the `latestMilestoneIndex` field is equal to the `latestSolidSubtangleMilestoneIndex` field.
+
+The `latestMilestoneIndex` field is the index of the latest milestone that the node has received from its neighbors.
+
+The `latestSolidSubtangleMilestoneIndex` field is the index of the latest milestone for which the node's ledger has all the transactions that the milestone directly and indirectly references.
 
 :::info:
-Here, we connect to a node on the Devnet, which is one of the [IOTA networks](../references/iota-networks.md) that you can use for testing. The Devnet is similar to the Mainnet, except the tokens are free.
+The `latestMilestoneIndex` and `latestSolidSubtangleMilestoneIndex` fields are accurate only when the IRI node is connected to synchronized neighbors.
 :::
+
+1. To check the current `latestMilestoneIndex` field, go to our [Discord](https://discord.iota.org) and enter **!milestone** in one of the channels
+
+    ![Entering !milestone on Discord](../images/discord-milestone-check.PNG)
+
+2. To check if your node is synchronized, call the `getNodeInfo()` method
+
+    :::info:
+    Here, we connect to a node on the Devnet, which is one of the [IOTA networks](../references/iota-networks.md) that you can use for testing. The Devnet is similar to the Mainnet, except the tokens are free.
+    :::
 
 --------------------
 ### JavaScript
@@ -244,15 +260,19 @@ The node returns a response object:
 }
 ```
 
+If the `latestMilestoneIndex` field is equal to the one you got from Discord and the `latestSolidSubtangleMilestoneIndex` field, the node is synchronized.
+
+If not, try connecting to a different node. The [iota.dance website](https://iota.dance/) includes a list of Mainnet nodes.
+
 :::success: Congratulations :tada:
-You've confirmed your connection to the node. Now, you're ready to [send a transaction to it](../tutorials/send-a-zero-value-transaction-with-nodejs.md).
+You've confirmed your connection to a synchronized node. Now, you're ready to [send a transaction to it](../tutorials/send-a-zero-value-transaction-with-nodejs.md).
 :::
 
 :::info:
 To learn what these fields mean, [see the API reference](root://node-software/0.1/iri/references/api-reference.md#getNodeInfo).
 :::
 
-## Run the code (Node.js)
+## Run the code
 
 <iframe height="600px" width="100%" src="https://repl.it/@jake91/Connect-to-a-node?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
 

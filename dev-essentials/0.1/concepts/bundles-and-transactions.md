@@ -39,7 +39,7 @@ All transactions in the same bundle have the same value in the `bundle` field. T
 * `lastIndex`
 * `timestamp`
 
-So, if the values of any of these fields were to change, the nodes would invalidate all transactions in the bundle.
+So, if the values of any of these transaction fields were to change, the nodes would invalidate all transactions in the bundle.
 
 As a result, bundles are atomic: Either all transactions in the bundle are valid and confirmed or none of them are.
 
@@ -47,10 +47,10 @@ To explain why bundles need to be atomic, take this example.
 
 > You're at an online checkout and the total to pay is 10 Mi. Your seed has 2 addresses (index 0 and 1), which both contain 5 Mi. So, you create three transactions: One input transaction to withdraw 5 Mi from address 0, another input transaction to withdraw 5 Mi from address 1, and one output transaction to deposit 10 Mi to the vendor's address. (We'll assume that both addresses in the input transactions were created from a private key with security level 1, so the signatures can fit in each transaction.)
 
-> For the vendor to receive 10 Mi, all three of those transactions must be valid. They're sequential instructions that rely on each other's validity to achieve the goal of transferring IOTA tokens.
+> For the vendor to receive 10 Mi, all three of those transactions must be valid. They're sequential instructions that rely on each other's validity to achieve the goal of transferring 10 Mi.
 
 :::info:
-It's not just multiple transactions that need to be packaged in a bundle, even individual ones do.
+It's not just multiple transactions that need to be packaged in a bundle, even individual ones do. In this case, the single transaction would be the head and tail transaction in the bundle. 
 :::
 
 ## Types of transaction
@@ -83,9 +83,9 @@ Bundles can contain multiple output transactions. If a message in an output tran
 Transactions that deposit IOTA tokens can also contain a message because they don't withdraw IOTA tokens, and therefore don't contain a signature.
 :::
 
-## Options for sending a transaction
+## Options for sending a bundle
 
-When you've created your transaction, you need to send it to a node along with two other arguments:
+When you've created your bundle, you need to send it to a node along with two other arguments:
 
 * Depth
 * Minimum weight magnitude
@@ -98,11 +98,13 @@ The greater the depth, the farther back in the Tangle the node starts, so a grea
 
 The [minimum weight magnitude](../concepts/minimum-weight-magnitude.md) (MWM) is a variable that defines how much work is done during proof of work. When you send a transaction to a node, you must use the correct MWM for that node's network. Otherwise, your transaction won't be valid and all nodes will reject it.
 
+For example, the MWM on the Mainnet is 14, but the MWM on the Devnet is only 9.
+
 ## References among transactions and bundles
 
 Each transaction in a bundle, except the head, [references the proceeding one](../references/structure-of-a-bundle.md) through the `trunkTransaction` field. These connections allow nodes to reconstruct bundles in the Tangle and validate the contents of all its transactions.
 
-The other `branchTransaction` and `trunkTransaction` fields reference the tail transactions of two existing bundles in the Tangle that the node returned after tip selection.
+The other `branchTransaction` and `trunkTransaction` fields reference the tail transactions of two existing bundles in the Tangle.
 
 :::info:
 [Send a bundle of transactions](../how-to-guides/send-bundle.md) to see these references.
@@ -112,13 +114,15 @@ The other `branchTransaction` and `trunkTransaction` fields reference the tail t
 
 After you send a bundle to a [node](root://node-software/0.1/iri/introduction/overview.md), it validates the transactions and appends each one to its ledger.
 
-During [tip selection](root://node-software/0.1/iri/concepts/tip-selection.md), a node finds and [validates each transaction in your bundle](root://node-software/0.1/iri/concepts/transaction-validation.md#bundle-validator) by traversing its `trunkTransaction` field. When the node has validated all transactions up to the head, your bundle is considered valid.
+During [tip selection](root://node-software/0.1/iri/concepts/tip-selection.md), a node finds and [validates each transaction in your bundle](root://node-software/0.1/iri/concepts/transaction-validation.md#bundle-validator) by traversing its `trunkTransaction` field.
+
+When the node has validated all transactions up to the head, your bundle is considered valid.
 
 ![Example of a bundle of 4 transactions](../images/bundle.png)
 
 ## Example bundles
 
-### Withdraw from address with security level 1
+### Withdraw from an address with security level 1
 
 This bundle transfers 80 i to a recipient from an address with a security level of 1.
 
@@ -128,7 +132,7 @@ This bundle transfers 80 i to a recipient from an address with a security level 
 | 1     | Sender's address and its signature | -100 (the total balance of the sender's address as a negative value) |
 | 2    | An address for the transfer of the remaining IOTA tokens (usually one of the sender's addresses)                      | 20 (remainder of the sender's address in transaction 1)                          |
 
-### Withdraw from address with security level 2
+### Withdraw from an address with security level 2
 
 This bundle transfers 80 i to a recipient from an address with a security level of 2.
 

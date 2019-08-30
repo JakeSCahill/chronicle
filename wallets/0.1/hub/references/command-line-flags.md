@@ -61,6 +61,6 @@
 | **Flag** |   **Description**| **Default values**|
 | :------------------------ | :--------------- | :--------|
 |<a name="monitorInterval"></a>`--monitorInterval`|Interval in milliseconds that Hub checks deposit addresses and updates the [`user_address` and `user_address_balance` tables](../references/database-tables.md). Those that contain tokens are included in the next sweep. 0=disabled.|60000|
-|`--sweepInterval` |Interval in milliseconds that Hub waits between sweeps. 0=disabled.|600000|
+|`--sweepInterval` |Interval in milliseconds that Hub waits between sweeps (set this flag to 0 to disable sweeps)|600000|
 |<a name="sweepLimits"></a>`--sweep_max_deposit`|Maximum number of user deposits to include in a sweep|5|
 |`--sweep_max_withdraw`|Maximum number of withdraw requests to include in a sweep|7|
