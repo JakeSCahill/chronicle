@@ -1,23 +1,21 @@
-# Introduction
+# Chronicle overview
 
-**Chronicle is a type of node software that allows you to store all transactions that reach an [IRI node](root://node-software/0.1/iri/introduction/overview) in a distributed database that scales well and has many options to secure the data.**
+**Chronicle is a type of node software that allows you to store all transactions that reach an [IRI node](root://node-software/0.1/iri/introduction/overview) in a distributed database that scales well and has many security options.**
 
 Over time, the ledger of an IRI node accumulates many transactions, which often cause it to become larger than the node's available memory. To stop the ledger from becoming too large, these nodes often do local snapshots that prune transactions. To allow an IRI node to store all transactions without pruning any, Chronicle stores them in a distributed Scylla database.
 
-![](../images/architecture.png)
+![Chronicle architecture](../images/architecture.png)
 
-Chronicle communicates with IRI nodes through the `tx_trytes` and `sn` [ZMQ events](root://node-software/0.1/iri/references/zmq-events.md) to receive information about the transactions in their ledgers . When Chronicle receives transactions, it process them through the umbrella project, then stores them in the Scylla database.
+Chronicle communicates with IRI nodes through the `tx_trytes` and `sn` [ZMQ events](root://node-software/0.1/iri/references/zmq-events.md) to receive information about the transactions in their ledgers . When Chronicle receives transactions, it processes them through the umbrella project, then it stores them in the Scylla database.
 
-## Chronicle architecture overview
+## Chronicle architecture
 
 Currently, one Chronicle node manages and supervises all the shards in the Scylla swarm. It does this by establishing at least one connection per shard. All the connections are independent, and are supervised by the core app in the umbrella project.
-
 In this diagram, the Chronicle node consists of the green components between the IRI node and the Scylla Swarm. The node contains the umbrella project, API services, the core app, the ZMQ messenger, and the explorer service.
 
 ![Chronicle architecture](../images/chronicleNode.png)
 
 #### Umbrella project
-
 An Umbrella project is a space where independent apps coexist and communicate through Inter-Process Communication (IPC). Each app runs under its own supervision tree, which allows it to grow and easily migrate to its own rack (a cluster with its own umbrella project).
 
 To allow Chronicle to scale up, it uses Elixir [umbrella projects](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html#umbrella-projects) to split code into multiple apps and arrange them under an umbrella project.
@@ -39,9 +37,9 @@ The Chronicle core app may be an independent microservice or it may be dependent
 
 #### Scylla swarm
 
-The Scylla swarm is shown in blue. The Scylla swarm stores transaction data for the permanode.
+The Scylla swarm is shown in blue. The Scylla swarm stores transaction data for Chronicle.
 
-![](../images/scyllaSwarm.png)
+![Scylla swarm](../images/scyllaSwarm.png)
 
 ## How Chronicle works
 
@@ -59,15 +57,15 @@ When you send a data request to a Chronicle, it requests the data from the Scyll
 
 ### Physical location of the database
 
-A Scylla database may be physically located on multiple computers in multiple datacenters. To accomplish this, build one Scylla node by installing ScyllaDB on one computer. Next, build more nodes to create a Scylla cluster. These nodes do not share memory or hard-drive space. They share their state via the Gossip protocol. Finally, add Scylla clusters to a Scylla swarm. Visualize a swarm as a ring of clusters. Scylla swarms can be located in one or more datacenters. Now, you have a distributed database.    
+A Scylla database may be physically located on multiple computers in multiple datacenters. To accomplish this, build one Scylla node by installing ScyllaDB on one computer. Next, build more nodes to create a Scylla cluster. These nodes do not share memory or hard-drive space. They share their state via the Gossip protocol. Finally, add Scylla clusters to a Scylla swarm. Visualize a swarm as a ring of clusters. Scylla swarms can be located in one or more datacenters. Now, you have a distributed database. 
 
 ### Logical location of the data
 
 Data is stored across multiple nodes on multiple computers. To achieve this, data is organized into rows and columns in a table. To create a table, you define each column and the type of data it can hold. You also define the [primary key, the partition key, and the clustering key](http://sudotutorials.com/tutorials/cassandra/cassandra-primary-key-cluster-key-partition-key.html). Then you add rows.
 
-The primary key is a unique identifier for each row in a table. A partition key indicates which node will hold a row of data. Clustering keys sort data in a partition. In a Scylla table, columns are ordered by the clustering key. Using these three keys, Scylla can locate data quickly.  
+The primary key is a unique identifier for each row in a table. A partition key indicates which node will hold a row of data. Clustering keys sort data in a partition. In a Scylla table, columns are ordered by the clustering key. Using these three keys, Scylla can locate data quickly. 
 
-Storing and retrieving data is faster when the data is organized into distinct collections, called shards. Use partitions to create shards. A Scylla partition is a logical storage unit that holds the rows identified by a partition key. A shard is a group of data with the same partition key.  
+Storing and retrieving data is faster when the data is organized into distinct collections, called shards. Use partitions to create shards. A Scylla partition is a logical storage unit that holds the rows identified by a partition key. A shard is a group of data with the same partition key. 
 
 To ensure reliability and fault tolerance, Scylla stores data replicas on multiple nodes. These nodes are called replica nodes. Partitions are repeated on replica nodes. You can set the number of replicas by setting the replication factor (RF).
 
@@ -85,4 +83,3 @@ Because Chronicle data is stored in a Scylla database, you can follow the [offic
 * Authentication
 * Encryption
 * Security audits
-

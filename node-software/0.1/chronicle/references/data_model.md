@@ -1,38 +1,38 @@
-# Data in the database
+# Scylla data model
 
-**Chronicle saves data from the Tangle in a Scylla database. This article describes the data in that database.**
+**This section describes the data model of the Scylla database for Chronicle.**
 
-The Scylla database includes the following database tables:
+The ScyllaDB data model includes the following tables:
 
-- **Bundle table:** Contains transaction bundles
+- **Bundle:** Stores transaction bundles
 
-- **Edge table:**
+- **Edge:** Provides secondary indexes
 
-- Tag table - limits the amount of time you can search by tag
+- **Tag:** Limits the amount of time you can search by tag
 
-- **Zero-value table:** - Contains spam and data transactions, which are ordered by month
+- **Zero-value:** Stores spam and data transactions by month
 
 ## Bundle table
 
-This table stores data about transaction bundles.
+Stores transaction bundles
 
-![Bundle table example](../images/bundleTable.png)
+![bundle table sample](../images/bundleTable.png)
 
 **Fields**
 
-`bundle_hash` is the main partition key. This means all bundles with same bundle_hash are stored in the same partition and replicated to the same replicas.  
+`bundle_hash` is the main partition key.  This means all bundles with same bundle_hash are stored in the same partition and replicated to the same replicas.  
 
-`outputs`
+`outputs` are a transaction with a value that is equal to or greater than 0
 
-`inputs`
+`inputs` are a transaction with a value that is less than 0
 
-`transactions_hashes`
+`transactions_hashes` identify a transaction
 
-`head_hashes`
 
 ***How to lookup rows***
 
-Rows are ordered by current_index(index) in ascending order. Look up by finding outputs. Use an output to locate inputs. Use an input to find the transactions_hashes. Then, use the head_hashes of a transactions_hash.
+Rows are ordered by current_index(index) in ASC (ascending) order.  Lookup by finding outputs.  Use an output to locate inputs.  Use an input to find the transactions_hashes.  Then, use the head_hashes of a transactions_hash.
+
 
 ## Edge table
 
@@ -40,13 +40,13 @@ Provides secondary indexes
 
 ![edge table sample](../images/edgeTable.png)
 
-**Fields**
+***Fields***
 
-`address`
+```address```
 
-`transaction_hash`
+```transaction_hash```
 
-`tip`
+```tip```
 
 **How to look up rows**
 
@@ -66,12 +66,12 @@ There are two types of tag tables:
 
 - Lookup by full tag and IOTA Area Code
 	
-There can be an unlimited number of transactions that use the same tag. This could result in too many transactions for a single node to store. One solution is to remove transactions after a given period of time. The tag table has a predefined TTL (time-to-live) which acts as a real-time index. When TTL is set to 1000 seconds, the row will disappear after 1000 seconds. Searches based on tags only work for transactions younger than the TTL.
+There can be an unlimited number of transactions that use the same tag.  This could result in too many transactions for a single node to store. One solution is to remove transactions after a given period of time.  The tag table has a predefined TTL (time-to-live) which acts as a real-time index.  When TTL is set to 1000 seconds, the row will disappear after 1000 seconds.  Searches based on tags only work for transactions younger than the TTL.
 
 ## Zero_value table
 
  Stores transactions with zero-value by month  
 
- **Fields**
+ ***Fields***
  
  Same as the edge table, except that the partition key is a composite partition key composed of address, year, month. This means only the monthly activities for that address will exist in the same shard. 
